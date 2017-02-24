@@ -32,5 +32,8 @@ int main(void) {
 		}	
 	}
 	printf("%s /%s :%d\n", domaine,ressource,port);
+	strcat("nslookup ",domaine);
+	strcat(domaine,ressource);
+	printf("%s\n", domaine);
 	return EXIT_SUCCESS;
 }
