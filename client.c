@@ -34,21 +34,19 @@ int main(void) {
 	}
 	//supprimer les retours à la ligne
 	strtok(domaine, "\n");
-	/*strcat(domaine,"/");
 	strtok(ressource, "\n");
-	strcat(domaine,ressource);*/
-	printf("%s\n",domaine);
 
 	/**
 		Récupérer l'adresse ip à partir d'un domaine
 	**/
 	struct hostent *pHostInfo =gethostbyname(domaine);
 	ip =inet_ntoa(*( struct in_addr*)( pHostInfo -> h_addr));
-
 	/**
 		Configuration du socket
 	**/
 	int sock;
+	char buffer[2056];
+	int byte_count;
 	struct sockaddr_in sin;
 
 	/* Creation de la socket */
@@ -59,5 +57,27 @@ int main(void) {
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(port);
 
+	connect(sock, (struct sockaddr*)&sin, sizeof(sin));
+
+	/**
+		Former le header pour l'envoyer au server
+	**/
+	char *header;
+	header = malloc(sizeof(domaine)+sizeof(ressource));
+	strcpy(header,"GET /");
+	strcat(header,ressource);
+	strcat(header," HTTP/1.1\r\nHost: ");
+	strcat(header,domaine);
+	strcat(header,"\r\n\r\n");
+	printf("%s\n", header);
+
+	/**
+		Communication avec le server et récupération du contenu
+	**/
+	send(sock,header,strlen(header),0);
+	recv(sock,buffer,sizeof(buffer),0);//On remplit le buffer avec la réponse du server
+	printf("%s\n",buffer);
+
+	close(sock);
 	return EXIT_SUCCESS;
 }
