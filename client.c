@@ -76,7 +76,7 @@ int main(void) {
 	**/
 	send(sock,header,strlen(header),0);
 	recv(sock,buffer,sizeof(buffer),0);//On remplit le buffer avec la réponse du server
-	printf("%s\n",buffer);
+	printf("%s\n",buffer);//TODO: avoir un contenu complet de la ressource (tronqué)
 
 	close(sock);
 	return EXIT_SUCCESS;
