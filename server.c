@@ -48,6 +48,7 @@ int main(void) {
    	  char buffer[256]="";
       //Attendre de recevoir la requête du client
 		  recv(csock, buffer, sizeof(buffer), 0);
+      //char *tok = strtok(ma_chaine, " ");
 		  printf("%s\n", buffer);
       //Si la requête est de type GET on envoie la ressource demandée
 	  }

@@ -45,7 +45,7 @@ int main(void) {
 		Configuration du socket
 	**/
 	int sock;
-	char buffer[2056];
+	char buffer[100];
 	int byte_count;
 	struct sockaddr_in sin;
 
@@ -69,15 +69,34 @@ int main(void) {
 	strcat(header," HTTP/1.1\r\nHost: ");
 	strcat(header,domaine);
 	strcat(header,"\r\n\r\n");
-	printf("%s\n", header);
+	//printf("%s\n", header);
 
 	/**
 		Communication avec le server et récupération du contenu
 	**/
+	int res;
 	send(sock,header,strlen(header),0);
-	recv(sock,buffer,sizeof(buffer),0);//On remplit le buffer avec la réponse du server
-	printf("%s\n",buffer);//TODO: avoir un contenu complet de la ressource (tronqué)
-
+	char nameFile[256] = "";
+	strcat(nameFile,ressource);
+	/**
+		Ecrire la commande 
+	**/
+	char cmd[256] = "firefox ";
+	strcat(cmd,ressource);
+	/**
+		Creer fichier et le remplir avec la requete
+	**/
+	FILE *f;
+	f=fopen(nameFile,"w");
+	do{
+		res=recv(sock,buffer, sizeof(buffer)-1,0);
+		fputs(buffer,f);
+		buffer[res]='\0';
+		printf("%s", buffer);
+		fflush(stdout);
+	}while(res>0);
+	fclose(f);
+	system(cmd);
 	close(sock);
 	return EXIT_SUCCESS;
 }
