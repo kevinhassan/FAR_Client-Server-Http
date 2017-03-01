@@ -63,15 +63,16 @@ int main(void) {
         nameFile = tok;
         tok = strtok(nameFile, "/");
         nameFile = tok;
-        printf("%s\n", nameFile);
         f=fopen(nameFile,"r");
         char buffer2[256]="";
         if(f != NULL){
           while(fgets(buffer2,256,f)!=NULL){
-            printf("%s\n", buffer2);
             send(csock,buffer2,256,0);
           }
           fclose(f);
+          shutdown(csock,2);
+          close(csock);
+
         }else{
           printf("%s\n", "fichier introuvable");
         }
@@ -79,8 +80,6 @@ int main(void) {
 	  }
 	}
   /* Fermeture de la socket client et de la socket serveur */
-  shutdown(csock,2);
-  close(csock);
   close(sock);
 
   return EXIT_SUCCESS;

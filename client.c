@@ -74,7 +74,7 @@ int main(void) {
 	/**
 		Communication avec le server et récupération du contenu
 	**/
-	int res;
+	int res =1;
 	send(sock,header,strlen(header),0);
 	char nameFile[256] = "";
 	strcat(nameFile,ressource);
@@ -90,10 +90,10 @@ int main(void) {
 	//f=fopen(nameFile,"w");
 	f=fopen("index.html","w");
 	do{
-		res=recv(sock,buffer, sizeof(buffer)-1,0);
-		fputs(buffer,f);
-		buffer[res]='\0';
+		res=recv(sock,buffer, 99,0);
+		strcat(buffer,"\0");
 		printf("%s", buffer);
+		fputs(buffer,f);
 		fflush(stdout);
 	}while(res>0);
 	fclose(f);
