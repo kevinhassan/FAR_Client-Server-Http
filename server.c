@@ -57,7 +57,6 @@ int main(void) {
       //Si la requête est de type GET on envoie la ressource demandée
       char *tok = strtok(buffer, " ");
       if(strcmp(tok,"GET") == 0){
-        printf("%s\n", "ok");
         tok = strtok(NULL, " ");
 
         FILE *f;
@@ -66,10 +65,11 @@ int main(void) {
         nameFile = tok;
         printf("%s\n", nameFile);
         f=fopen(nameFile,"r");
+        char buffer2[256]="";
         if(f != NULL){
-          while(fgets(buffer,256,f) != NULL){
-            printf("%s\n", buffer);
-            send(csock,buffer,256,0);
+          while(fgets(buffer2,256,f)!=NULL){
+            printf("%s\n", buffer2);
+            send(csock,buffer2,256,0);
           }
           fclose(f);
         }else{

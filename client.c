@@ -87,7 +87,8 @@ int main(void) {
 		Creer fichier et le remplir avec la requete
 	**/
 	FILE *f;
-	f=fopen(nameFile,"w");
+	//f=fopen(nameFile,"w");
+	f=fopen("index.html","w");
 	do{
 		res=recv(sock,buffer, sizeof(buffer)-1,0);
 		fputs(buffer,f);
