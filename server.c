@@ -70,13 +70,15 @@ int main(void) {
             send(csock,buffer2,256,0);
           }
           fclose(f);
-          shutdown(csock,2);
-          close(csock);
-
         }else{
           printf("%s\n", "fichier introuvable");
         }
+      }else{//Si la requête n'est pas sous le format GET
+        strcpy(buffer,"ERREUR : Seul les requêtes en GET sont acceptées ...");
+        send(csock,buffer,256,0);
       }
+      shutdown(csock,2);
+      close(csock);
 	  }
 	}
   /* Fermeture de la socket client et de la socket serveur */

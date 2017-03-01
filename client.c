@@ -81,23 +81,22 @@ int main(void) {
 	/**
 		Ecrire la commande 
 	**/
-	char cmd[256] = "firefox ";
+	//char cmd[256] = "firefox ";//Dans le cas de linux
+	char cmd[256] = "open -a safari ";//Dans le cas de OSX
 	strcat(cmd,ressource);
 	/**
 		Creer fichier et le remplir avec la requete
 	**/
 	FILE *f;
-	//f=fopen(nameFile,"w");
 	f=fopen("index.html","w");
 	do{
 		res=recv(sock,buffer, 99,0);
 		strcat(buffer,"\0");
-		printf("%s", buffer);
 		fputs(buffer,f);
 		fflush(stdout);
 	}while(res>0);
 	fclose(f);
-	system(cmd);
 	close(sock);
+	system(cmd);
 	return EXIT_SUCCESS;
 }
