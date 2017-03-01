@@ -7,9 +7,13 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int main(void) {
   int port = 0;
+  char *token;
+  char *nameFile;
+  char buffer[256]; 
   while(port<=0){
     printf("%s\n", "Entrer le port (-1: pour le port 80) :");
     scanf("%d",&port);
@@ -51,6 +55,27 @@ int main(void) {
       //char *tok = strtok(ma_chaine, " ");
 		  printf("%s\n", buffer);
       //Si la requête est de type GET on envoie la ressource demandée
+      char *tok = strtok(buffer, " ");
+      if(strcmp(tok,"GET") == 0){
+        printf("%s\n", "ok");
+        tok = strtok(NULL, " ");
+
+        FILE *f;
+        nameFile = tok;
+        tok = strtok(nameFile, "/");
+        nameFile = tok;
+        printf("%s\n", nameFile);
+        f=fopen(nameFile,"r");
+        if(f != NULL){
+          while(fgets(buffer,256,f) != NULL){
+            printf("%s\n", buffer);
+            send(csock,buffer,256,0);
+          }
+          fclose(f);
+        }else{
+          printf("%s\n", "fichier introuvable");
+        }
+      }
 	  }
 	}
   /* Fermeture de la socket client et de la socket serveur */
